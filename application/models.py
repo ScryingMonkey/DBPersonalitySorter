@@ -57,8 +57,9 @@ class Questions(db.Model):
  
 class Results(db.Model):
 	id = db.Column(db.Integer, primary_key = True)
-	user_id = db.Column(db.Integer,db.ForeignKey('users.id'))
-	users = db.relationship('Users', backref=db.backref('posts', lazy='dynamic'))
+	user_id = db.Column(db.Integer)
+#	user_id = db.Column(db.Integer,db.ForeignKey('users.id'))
+#	users = db.relationship('Users', backref=db.backref('posts', lazy='dynamic'))
 	I = db.Column(db.String(250))
 	E = db.Column(db.String(250))
 	N = db.Column(db.String(250))
