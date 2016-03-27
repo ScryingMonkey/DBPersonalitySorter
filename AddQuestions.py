@@ -72,17 +72,7 @@ def addQuestions(txtFilePath):
 			db.session.rollback()
 	print "... ...exiting for loop"
 	return
-def testDB(table):
-	try:
-		questions = Questions.query.order_by(Questions.number)
-	except:
-		print "...Failed to query database................."
-	for q in questions:
-		print q.number
-	print "First: %s %s" % (questions[0].number, questions[0].question)
-	print "Last: %s %s" % (questions[-1].number, questions[-1].question)
 
-	return
 
 #clearQuestions()
 path = "static\Keirsey_Sorter.txt"

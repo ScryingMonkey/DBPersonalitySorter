@@ -97,7 +97,7 @@ def showQuestions():
 # Pull all stored results from database and display them
 @application.route('/allResults')
 def showAllScores():
-	scores = Results.query(Results).all()
+	scores = Results.query.all()
 	for score in scores:
 		print score
 	return render_template('allScores.html', scores=scores)
