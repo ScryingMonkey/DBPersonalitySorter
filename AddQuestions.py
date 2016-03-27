@@ -2,45 +2,51 @@ from application.models import Data, Users, Questions, Results
 from application import db
 
 
+# Drop all data in tables
+def clearQuestions():
+	try:
+		questions = Questions.query.all()
+		print "...queried successfully........."
+		for q in questions:
+			db.session.delete(q)
+		print "...deleted successfully.........."
+		db.session.commit()        
+		print "...Questions successfully cleared.................."
+	except:
+		db.session.rollback()
+		print "...Failed to clear Questions......................."
+	finally:
+		db.session.close()
+	return
 # Takes in a file path to a txt file and returns a list
 # of dictionaries of questions gathered from the text file
 def CollectQuestions(filePath):
-    file = open(filePath, "r")
-    questions = []
-    n = 0
-    for i, line in enumerate(file):
-    #    print "line[:3]: %s" % line[:3]
-    #    print "line:...%s" % line
-        if line[:3] == "[Q]":
-            n+=1
-            iQ = line.find("[Q]")
-            iA = line.find("(a)")
-            iB = line.find("(b)")
+	file = open(filePath, "r")
+	questions = []
+	n = 0
+	for i, line in enumerate(file):
+		print "line[:3]: %s" % line[:3]
+		print "line %s: %s" % (n,line)
+		if line[:3] == "[Q]":
+			print "...if passed.........."
+			n+=1
+			iQ = line.find("[Q]")
+			iA = line.find("(a)")
+			iB = line.find("(b)")
 
-            #print "q:...", line[iQ+3:iA].strip()
-            #print "a:...", line[iA+3:iB].strip()
-            #print "b:...", line[iB+3:].strip()
-    #        for i, char in enumerate(line):
-    #            if char ==
-            question = {'number' : n,
-                        'question': line[iQ+3:iA].strip(),
-                        'answerA': line[iA+3:iB].strip(),
-                        'answerB': line[iB+3:].strip()}
-            #print question
-            questions.append(question)
+			question = {'number' : n,
+						'question': line[iQ+3:iA].strip(),
+						'answerA': line[iA+3:iB].strip(),
+						'answerB': line[iB+3:].strip()}
+			print question
+			questions.append(question)
 
-        else:
+		else:
+			print "...Failed on collecting question: %s" % n
 			continue
 			
-    return questions
-
-#    for q in data:
-#        print "%s. %s..." %(q['number'], q['question'])
-#        print "(a) ", q['answerA']
-#        print "(b) ", q['answerB']
-#        print ""
-
-    file.close()
+	file.close()
+	return questions
 
 def addQuestions(txtFilePath):
 	"""
@@ -58,14 +64,24 @@ def addQuestions(txtFilePath):
 								  answerA = q['answerA'],
 								  answerB = q['answerB'] )
 		print "%s. %s..." %(q['number'], q['question'])
-		try:     
-			db.session.add(question)
+		db.session.add(question)
+		try:
 			db.session.commit()        
 			db.session.close()
 		except:
 			db.session.rollback()
 	print "... ...exiting for loop"
 	return
+def testDB(table):
+	try:
+		questions = Questions.query.order_by(Questions.number)
+	except:
+		print "...Failed to query database................."
+	print "First: %s" % questions[0].question
+	print "Last: %s" % questions[-1].question
+	return
 
+#clearQuestions()
 path = "static\Keirsey_Sorter.txt"
 addQuestions(path)
+testDB(Questions)

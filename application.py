@@ -29,7 +29,7 @@ def scoreResults(results):
 	scores = {'e':0, 'i':0, 's':0, 'n':0, 't':0, 'f':0, 'j':0, 'p':0}
 	personalities = ['z','e','i','s','n','s','n','t','f','t','f','j','p','j','p']
 	print "...before scoring: %s ................." % scores
-	for x in range(0,9): #<-----------------------this must be corrected to 0,10 once the db is corrected to have 70 questions
+	for x in range(0,10): #<-----------------------this must be corrected to 0,10 once the db is corrected to have 70 questions
 		for i,a in enumerate(range(1,14,2)):
 			b = a+1
 			#print i+1+x*7,a,b
@@ -85,6 +85,7 @@ def testApp():
 
 # Show all Questions
 @application.route('/', methods=['GET'])
+@application.route('/index', methods=['GET'])
 @application.route('/questions', methods=['GET'])
 def showQuestions():
 	try:
@@ -112,7 +113,7 @@ def showResults():
 	if request.method == 'POST':
 		#print "...in /results if POST......"
 		results = {}
-		for n in range(1,69):
+		for n in range(1,70):
 			result = "result" + str(n)	
 			#print result
 			results.update({n:str(request.form[result])})
