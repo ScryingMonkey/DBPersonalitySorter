@@ -1,0 +1,77 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "header.html" %}
+
+<!-- Begin top menu -->
+	<div class="row">
+			<div class="col-md-10"></div>
+			<div class="col-md-2 text-right"></div>
+		<div class="row banner main">
+			<div class="col-md-2"></div>
+			<div class="col-md-10" padding-none">
+				<h1>Keirsey Sorter</h1>
+			</div>
+		</div>
+	</div>
+
+<!-- Begin page content -->
+<div class="row page content">
+
+	<!-- Begin questions -->
+	<!-- Begin form -->
+	<form name="results" action="/results" method="POST">
+		{% for question in questions %}
+			<div class="row question">
+				<div class="col-md-1"></div>
+				<div class="col-md-10">
+					<div class="row">
+						<div class="col-md-12">
+							<h3>{{question.number}}. {{question.question}}:</h3>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-1"></div>
+						<div class="col-md-5">
+							<input type="radio" name="result{{question.number}}" value="a" checked> {{question.answerA}}
+						</div>
+						<div class="col-md-5">
+							<input type="radio" name="result{{question.number}}" value="b"> {{question.answerB}}
+						</div>
+						<div class="col-md-1"></div>
+					</div>
+				</div>
+				<div class="col-md-1"></div>
+			</div>
+		{% endfor %}
+		<!-- Begin Bottom Buttons -->
+		<div class="row" >
+			<div class="col-md-2"></div>
+			<div class="col-md-8 buttons">
+			<div class="row">
+				<div class="col-md-5" align="center">
+					<a href="{{url_for('showResults')}}">
+						<button class="btn btn-default" id="getResults" type="submit">
+							<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>Get Results
+						</button>
+					</a>
+				</div>
+				<div class="col-md-2"></div>
+				<div class="col-md-5" align="center">
+					<a href = "{{ url_for('showQuestions') }}">
+						<button class="btn btn-default delete">
+							<span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Cancel
+						</button>
+					</a>
+				</div>
+			</div>
+			</div>
+			<div class="col-md-2"></div>
+		</div>
+		<!-- End buttons -->
+	</form>
+	<!-- end form -->
+</div>
+<!-- End page content -->
+		
+{% include "footer.html" %}
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "header.html" %}
+
+<!-- Begin top menu -->
+	<div class="row">
+			<div class="col-md-10"></div>
+			<div class="col-md-2 text-right"></div>
+		<div class="row banner main">
+			<div class="col-md-2"></div>
+			<div class="col-md-10" padding-none">
+				<h1>Keirsey Sorter</h1>
+			</div>
+		</div>
+	</div>
+	
+	<!-- Begin page content -->
+	<div class="row page content">
+			<div class="col-md-10"></div>
+			<div class="col-md-2 text-right"></div>
+		<div class="row" >
+			<div class="col-md-2"></div>
+			<div class="col-md-8 buttons">
+				<div class="col-md-6" align="center">
+					<a href="{{url_for('testEngine')}}">
+						<button class="btn btn-default" id="test-Engine">
+							<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>Test printing Questions to terminal
+						</button>
+					</a>
+				</div>
+				<div class="col-md-6" align="center">
+					<a href="{{url_for('showQuestions')}}">
+						<button class="btn btn-default" id="show-Questions">
+							<span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>Test displaying Questions to html
+						</button>
+					</a>
+				</div>
+			</div>
+			<div class="col-md-2"></div>
+		</div>
+	</div>
+	
+{% include "footer.html" %}
+{% endblock %}

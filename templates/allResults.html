@@ -17,30 +17,33 @@
 	<!-- Begin page content -->
 	<div class="row page content">
 	<!-- Begin displaying scores -->
-			<div class="row results">
+	{% for score in scores %}
+			<div class="row scores">
 				<div class="col-md-1"></div>
 				<div class="col-md-10" align="center">
 					<div class="row">
 						<div class="col-md-3">
-							<h3>E = {{scores.e}}</h3><br>
-							<h3>I = {{scores.i}}</h3>
+							<h3>E = {{score.e}}</h3><br>
+							<h3>I = {{score.i}}</h3>
 						</div>
 						<div class="col-md-3">
-							<h3>S = {{scores.s}}</h3><br>
-							<h3>N = {{scores.n}}</h3>
+							<h3>S = {{score.s}}</h3><br>
+							<h3>N = {{score.n}}</h3>
 						</div>
 						<div class="col-md-3">
-							<h3>T = {{scores.t}}</h3><br>
-							<h3>F = {{scores.f}}</h3>
+							<h3>T = {{score.t}}</h3><br>
+							<h3>F = {{score.f}}</h3>
 						</div>
 						<div class="col-md-3">
-							<h3>J = {{scores.j}}</h3><br>
-							<h3>P = {{scores.p}}</h3>
+							<h3>J = {{score.j}}</h3><br>
+							<h3>P = {{score.p}}</h3>
 						</div>
 					</div>
 				</div>
 				<div class="col-md-1"></div>
 			</div>
+			<hr>
+	{% end for %}
 	<!-- End displaying scores -->
 	<!-- Begin bottom buttons -->
 		<div class="col-md-10"></div>
@@ -49,9 +52,9 @@
 			<div class="col-md-2"></div>
 			<div class="col-md-8 buttons">
 				<div class="col-md-6" align="center">
-					<a href="{{url_for('showAllScores')}}">
-						<button class="btn btn-default" id="showAllScores">
-							<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>Show All Scores
+					<a href="{{url_for('showQuestions')}}">
+						<button class="btn btn-default" id="something">
+							<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>Nothing yet!
 						</button>
 					</a>
 				</div>
