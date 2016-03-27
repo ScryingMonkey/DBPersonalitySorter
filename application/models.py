@@ -77,7 +77,7 @@ class Results(db.Model):
 		self.F = F
 		self.J = J
 		self.P = P
-		self.users = users
+		#self.users = users
 	def __repr__(self):
 		return '<Results %r>' % self.id
 	@property
