@@ -113,7 +113,7 @@ def showResults():
 	if request.method == 'POST':
 		#print "...in /results if POST......"
 		results = {}
-		for n in range(1,70):
+		for n in range(1,71):
 			result = "result" + str(n)	
 			#print result
 			results.update({n:str(request.form[result])})
