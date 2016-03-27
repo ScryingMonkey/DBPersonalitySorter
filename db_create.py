@@ -3,4 +3,6 @@ from application.models import Data
 
 db.create_all()
 
-print("DB created.")
+print("...DB created.")
+
+print("...DB initialized.")
