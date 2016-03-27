@@ -7,7 +7,7 @@ import random, string
 #from oauth2client.client import flow_from_clientsecrets, FlowExchangeError
 #import httplib2
 import json
-import requests
+#import requests
 from application import db
 
 
@@ -49,13 +49,13 @@ def scoreResults(results):
 #.............................................................................................
 
 # test html
-@application.route('/')
-@application.route('/testApp')
+@application.route('/', methods=['GET'])
+@application.route('/testApp', methods=['GET'])
 def testApp():
 	return render_template('testing00.html')
 
 # Show all Questions
-@application.route('/questions')
+@application.route('/questions', methods=['GET'])
 def showQuestions():
 	try:
 		questions = Questions.query.order_by(Questions.number)
@@ -116,4 +116,5 @@ def showResults():
 	
 
 if __name__ == '__main__':
-    application.run(host='0.0.0.0')
+    #application.run(host='0.0.0.0')
+	application.run(host = '0.0.0.0', port = 5000)
