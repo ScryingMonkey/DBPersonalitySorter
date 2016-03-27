@@ -121,7 +121,8 @@ def showResults():
 		# send dictionary results, returns dictionary scores
 		scores = scoreResults(results)	
 		# ToDo: Include user in commit in order to store results by user using Oauth2
-		newResults = Results(I = scores['i'],
+		newResults = Results(user_id = 4,
+							I = scores['i'],
 							E = scores['e'],
 							N = scores['n'],
 							S = scores['s'],
