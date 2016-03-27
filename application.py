@@ -79,12 +79,12 @@ def index():
     return render_template('index.html', form1=form1, form2=form2)
 
 # test html
-@application.route('/', methods=['GET'])
 @application.route('/testApp', methods=['GET'])
 def testApp():
 	return render_template('testing00.html')
 
 # Show all Questions
+@application.route('/', methods=['GET'])
 @application.route('/questions', methods=['GET'])
 def showQuestions():
 	try:
