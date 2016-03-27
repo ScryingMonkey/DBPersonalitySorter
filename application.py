@@ -32,7 +32,7 @@ def scoreResults(results):
 	for x in range(0,10): #<-----------------------this must be corrected to 0,10 once the db is corrected to have 70 questions
 		for i,a in enumerate(range(1,14,2)):
 			b = a+1
-			#print i+1+x*7,a,b
+			print i+1+x*7,a,b
 			if results[i+1+x*7] == 'a':
 				scores[personalities[a]] += 1
 			elif results[i+1+x*7] == 'b':
