@@ -16,7 +16,7 @@ class Users(db.Model):
 	name = db.Column(db.String(250), nullable=False)
 	email = db.Column(db.String(250), unique=True, nullable=False)
 	password = db.Column(db.String(250), nullable=False)
-	def __init__(self, name, email, password, results):
+	def __init__(self, name, email, password):
 		self.name = name
 		self.email = email
 		self.password = password
@@ -57,9 +57,8 @@ class Questions(db.Model):
  
 class Results(db.Model):
 	id = db.Column(db.Integer, primary_key = True)
-	user_id = db.Column(db.Integer)
-#	user_id = db.Column(db.Integer,db.ForeignKey('users.id'))
-#	users = db.relationship('Users', backref=db.backref('posts', lazy='dynamic'))
+	user_id = db.Column(db.Integer,db.ForeignKey('users.id'))
+	users = db.relationship('Users', backref=db.backref('posts', lazy='dynamic'))
 	I = db.Column(db.String(250))
 	E = db.Column(db.String(250))
 	N = db.Column(db.String(250))

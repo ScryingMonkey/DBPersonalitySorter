@@ -16,33 +16,33 @@
 	
 	<!-- Begin page content -->
 	<div class="row page content">
-	<!-- Begin displaying scores -->
+	<!-- Begin displaying results -->
 	<hr>
-	{% for score in scores %}
-			<div class="row scores">
+	{% for result in results %}
+			<div class="row results">
 				<div class="col-md-1"></div>
 				<div class="col-md-10" align="center">
 					<div class="row">
 						<div class="col-md-12">
-							<h3>User ID: {{score.user_id}}</h3>
+							<h3>User: {{result[0].name}}</h3>
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-md-3">
-							<h3>E = {{score.E}}</h3><br>
-							<h3>I = {{score.I}}</h3>
+							<h3>E = {{result[1].E}}</h3><br>
+							<h3>I = {{result[1].I}}</h3>
 						</div>
 						<div class="col-md-3">
-							<h3>S = {{score.S}}</h3><br>
-							<h3>N = {{score.N}}</h3>
+							<h3>S = {{result[1].S}}</h3><br>
+							<h3>N = {{result[1].N}}</h3>
 						</div>
 						<div class="col-md-3">
-							<h3>T = {{score.T}}</h3><br>
-							<h3>F = {{score.F}}</h3>
+							<h3>T = {{result[1].T}}</h3><br>
+							<h3>F = {{result[1].F}}</h3>
 						</div>
 						<div class="col-md-3">
-							<h3>J = {{score.J}}</h3><br>
-							<h3>P = {{score.P}}</h3>
+							<h3>J = {{result[1].J}}</h3><br>
+							<h3>P = {{result[1].P}}</h3>
 						</div>
 					</div>
 				</div>
@@ -50,7 +50,7 @@
 			</div>
 			<hr>
 	{% endfor %}
-	<!-- End displaying scores -->
+	<!-- End displaying results -->
 	<!-- Begin bottom buttons -->
 		<div class="col-md-10"></div>
 		<div class="col-md-2 text-right"></div>

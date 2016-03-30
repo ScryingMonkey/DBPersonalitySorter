@@ -9,6 +9,7 @@ import random, string
 import json
 #import requests
 from application import db
+import random
 
 
 
@@ -29,10 +30,10 @@ def scoreResults(results):
 	scores = {'e':0, 'i':0, 's':0, 'n':0, 't':0, 'f':0, 'j':0, 'p':0}
 	personalities = ['z','e','i','s','n','s','n','t','f','t','f','j','p','j','p']
 	print "...before scoring: %s ................." % scores
-	for x in range(0,9): #<-----------------------this must be corrected to 0,10 once the db is corrected to have 70 questions
+	for x in range(0,10): #<-----------------------this must be corrected to 0,10 once the db is corrected to have 70 questions
 		for i,a in enumerate(range(1,14,2)):
 			b = a+1
-			#print i+1+x*7,a,b
+			print i+1+x*7,a,b
 			if results[i+1+x*7] == 'a':
 				scores[personalities[a]] += 1
 			elif results[i+1+x*7] == 'b':
@@ -48,13 +49,44 @@ def scoreResults(results):
 #.....GET Requests.............................................................................
 #.............................................................................................
 
+# test app from tutorial
+@application.route('/test', methods=['GET', 'POST'])
+def index():
+    print "...in /test.................."
+    form1 = EnterDBInfo(request.form) 
+    form2 = RetrieveDBInfo(request.form) 
+    
+    if request.method == 'POST' and form1.validate():
+        data_entered = Data(notes=form1.dbNotes.data)
+        try:     
+            db.session.add(data_entered)
+            db.session.commit()        
+            db.session.close()
+        except:
+            db.session.rollback()
+        return render_template('thanks.html', notes=form1.dbNotes.data)
+        
+    if request.method == 'POST' and form2.validate():
+        try:   
+            num_return = int(form2.numRetrieve.data)
+            query_db = Data.query.order_by(Data.id.desc()).limit(num_return)
+            for q in query_db:
+                print(q.notes)
+            db.session.close()
+        except:
+            db.session.rollback()
+        return render_template('results.html', results=query_db, num_return=num_return)                
+    
+    return render_template('index.html', form1=form1, form2=form2)
+
 # test html
-@application.route('/', methods=['GET'])
 @application.route('/testApp', methods=['GET'])
 def testApp():
 	return render_template('testing00.html')
 
 # Show all Questions
+@application.route('/', methods=['GET'])
+@application.route('/index', methods=['GET'])
 @application.route('/questions', methods=['GET'])
 def showQuestions():
 	try:
@@ -66,7 +98,7 @@ def showQuestions():
 # Pull all stored results from database and display them
 @application.route('/allResults')
 def showAllScores():
-	scores = Results.query(Results).all()
+	scores = Results.query.all()
 	for score in scores:
 		print score
 	return render_template('allScores.html', scores=scores)
@@ -82,7 +114,7 @@ def showResults():
 	if request.method == 'POST':
 		#print "...in /results if POST......"
 		results = {}
-		for n in range(1,69):
+		for n in range(1,71):
 			result = "result" + str(n)	
 			#print result
 			results.update({n:str(request.form[result])})
@@ -90,7 +122,8 @@ def showResults():
 		# send dictionary results, returns dictionary scores
 		scores = scoreResults(results)	
 		# ToDo: Include user in commit in order to store results by user using Oauth2
-		newResults = Results(I = scores['i'],
+		newResults = Results(user_id = 777,
+							I = scores['i'],
 							E = scores['e'],
 							N = scores['n'],
 							S = scores['s'],
@@ -99,6 +132,7 @@ def showResults():
 							J = scores['j'],
 							P = scores['p'],)
 		#user_id=login_session['user_id'])
+		print newResults
 		try:
 			db.session.add(newResults)
 			db.session.commit()        
@@ -115,6 +149,7 @@ def showResults():
 		return render_template('questions.html')
 	
 
+
 if __name__ == '__main__':
-    #application.run(host='0.0.0.0')
-	application.run(host = '0.0.0.0', port = 5000)
+    #application.run(host='0.0.0.0')<---works on aws eb
+	application.run(host = 'localhost', port = 5000)

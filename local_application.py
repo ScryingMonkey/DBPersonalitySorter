@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request, redirect,jsonify, url_for, flash
 from application.models import Data, Users, Questions, Results
 from application.forms import EnterDBInfo, RetrieveDBInfo
-from application.logic import *
 from flask import session as login_session
 from flask import make_response
 import random, string
@@ -21,12 +20,38 @@ application.debug=True
 application.secret_key = 'cC1YCIWOj9GgWspgNEo2'   
 
 #.............................................................................................
+#.....Helper functions.............................................................................
+#.............................................................................................
+
+# Takes in a dictionary of results (question1=a, question2=b, etc)
+# Returns a dictionary of scores for each personality aspect (ex. N = 18)
+def scoreResults(results):
+	print "...In scoreResults............"
+	scores = {'e':0, 'i':0, 's':0, 'n':0, 't':0, 'f':0, 'j':0, 'p':0}
+	personalities = ['z','e','i','s','n','s','n','t','f','t','f','j','p','j','p']
+	print "...before scoring: %s ................." % scores
+	for x in range(0,10): #<-----------------------this must be corrected to 0,10 once the db is corrected to have 70 questions
+		for i,a in enumerate(range(1,14,2)):
+			b = a+1
+			print i+1+x*7,a,b
+			if results[i+1+x*7] == 'a':
+				scores[personalities[a]] += 1
+			elif results[i+1+x*7] == 'b':
+				scores[personalities[b]] += 1
+			else:
+				print "...ERROR in scoreResutls(): Invalid input on question %s ............." % str(n+7*x)
+	print "...after scoring: %s ..............." % scores
+	
+	return scores
+
+
+#.............................................................................................
 #.....GET Requests.............................................................................
 #.............................................................................................
 
 # test app from tutorial
 @application.route('/test', methods=['GET', 'POST'])
-def flaskTutorial():
+def index():
     print "...in /test.................."
     form1 = EnterDBInfo(request.form) 
     form2 = RetrieveDBInfo(request.form) 
@@ -64,17 +89,19 @@ def testApp():
 @application.route('/index', methods=['GET'])
 @application.route('/questions', methods=['GET'])
 def showQuestions():
-	questions = getQuestions()
+	try:
+		questions = Questions.query.order_by(Questions.number)
+	except:
+		print "...Failed to query database................."
 	return render_template('questions.html', questions=questions)
 
 # Pull all stored results from database and display them
 @application.route('/allResults')
 def showAllScores():
-	print "...in showAllScores............."
-	results = db.session.query(Users, Results).filter(Users.id == Results.user_id ).order_by(Users.id).all()
-	for result in results:
-		print result[0].name
-	return render_template('allScores.html', results=results)
+	scores = Results.query.all()
+	for score in scores:
+		print score
+	return render_template('allScores.html', scores=scores)
 	
 #.............................................................................................
 #.....GET Requests.............................................................................
@@ -86,29 +113,44 @@ def showResults():
 	print "...In showResults().................."
 	if request.method == 'POST':
 		#print "...in /results if POST......"
-		NumberOfQuestions = len(getQuestions()) #<---- should be a multiple of 7
-		print "Number of questions: %s" % NumberOfQuestions
 		results = {}
-		for n in range(1,NumberOfQuestions+1): #<--- change this to iterate over number of rows in the Questions table
+		for n in range(1,71):
 			result = "result" + str(n)	
 			#print result
 			results.update({n:str(request.form[result])})
+		print results
+		# send dictionary results, returns dictionary scores
+		scores = scoreResults(results)	
+		# ToDo: Include user in commit in order to store results by user using Oauth2
+		newResults = Results(user_id = 777,
+							I = scores['i'],
+							E = scores['e'],
+							N = scores['n'],
+							S = scores['s'],
+							T = scores['t'],
+							F = scores['f'],
+							J = scores['j'],
+							P = scores['p'],)
 		#user_id=login_session['user_id'])
-		userName = "DummyUser02"
-		# send a user name, get a user object
-		user = getUser(userName)
-		user_id = user.id #<---- change this to query User table based on name of logged in user
-		userName = user.name
-		# send dictionary results, get a dictionary of scores and adds scores as a row in the Results table
-		scores = addResult(results, user_id)
+		print newResults
+		try:
+			db.session.add(newResults)
+			db.session.commit()        
+			db.session.close()
+		except:
+			db.session.rollback()
+		
 		#flash('New Menu %s Item Successfully Created' % (newItem.name))
 		flash('New Results Successfully Saved')
-		return render_template('results.html', scores = scores, userName = userName)
+		db.session.commit()
+		print "...session sucessfully committed.........."
+		return render_template('results.html', scores = scores)
 	else:
 		return render_template('questions.html')
 	
 
 
 if __name__ == '__main__':
-    #application.run(host='0.0.0.0')<---works on aws eb
+	print "...app running ..."
+    #application.run(host='0.0.0.0') <----tested with aws eb
 	application.run(host = '0.0.0.0', port = 5000)
