@@ -21,8 +21,12 @@ def getDBURI(filePath):
 				'HOST': os.environ['RDS_HOSTNAME'],
 				'PORT': os.environ['RDS_PORT'],
 		}
+		print "Variables"
+		for thing in db:
+			print thing
+		print "End variables"
 		#SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://<db_user>:<db_password>@<endpoint>/<db_url>'
-		SQLALCHEMY_DATABASE_URI = db['ENGINE'],"://",db['USER'],":",db['PASSWORD'],"@",db['HOST'],"/",db['NAME']
+		SQLALCHEMY_DATABASE_URI = "mysql+pymysql://",db['USER'],":",db['PASSWORD'],"@",db['HOST'],"/",db['NAME']
 	else:
 		print "...in local branch in config.py.getDBURI()....."
 		file = open(filePath, "r")
