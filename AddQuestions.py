@@ -1,11 +1,11 @@
 from application.models import Data, Users, Questions, Results
 from application import db
-
+from logic import getQuestions
 
 # Drop all data in tables
 def clearQuestions():
 	try:
-		questions = Questions.query.all()
+		questions = getQuestions() #Questions.query.all()
 		print "...queried successfully........."
 		for q in questions:
 			db.session.delete(q)
@@ -77,4 +77,4 @@ def addQuestions(txtFilePath):
 #clearQuestions()
 path = "static\Keirsey_Sorter.txt"
 #addQuestions(path)
-testDB(Questions)
+print "Everthing is commented!  Uncomment something to run this."
