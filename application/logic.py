@@ -72,6 +72,7 @@ def addResult(results, id):
 
 # returns a query object of Questions.all() ordered by number
 def getQuestions():
+	print "...getting Questions............"
 	try:
 		questions = Questions.query.order_by(Questions.number).all()
 		print "...Successfully queried Questions.query.order_by(Questions.number).all()......"
