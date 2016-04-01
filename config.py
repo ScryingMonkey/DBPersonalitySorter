@@ -1,4 +1,5 @@
 import os
+
 #.............................................
 # Database configuration
 #.............................................
@@ -14,19 +15,16 @@ import os
 def getDBURI(filePath):
 	if 'RDS_HOSTNAME' in os.environ:
 		print "...in AWS branch of config.py.getDBURI()....."
-		db = {	'ENGINE': 'mysql+pymysql',
+		DATABASE = {	'ENGINE': 'mysql+pymysql',
 				'NAME': os.environ['RDS_DB_NAME'],
 				'USER': os.environ['RDS_USERNAME'],
 				'PASSWORD': os.environ['RDS_PASSWORD'],
 				'HOST': os.environ['RDS_HOSTNAME'],
-				'PORT': os.environ['RDS_PORT'],
+				'PORT': os.environ['RDS_PORT']
 		}
-		print "Variables"
-		for thing in db:
-			print thing
-		print "End variables"
+
 		#SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://<db_user>:<db_password>@<endpoint>/<db_url>'
-		SQLALCHEMY_DATABASE_URI = "mysql+pymysql://",db['USER'],":",db['PASSWORD'],"@",db['HOST'],"/",db['NAME']
+		SQLALCHEMY_DATABASE_URI = DATABASE['USER'],"://",DATABASE['USER'],":",DATABASE['PASSWORD'],"@",DATABASE['HOST'],"/",DATABASE['NAME']
 	else:
 		print "...in local branch in config.py.getDBURI()....."
 		file = open(filePath, "r")
@@ -34,6 +32,18 @@ def getDBURI(filePath):
 	
 	return SQLALCHEMY_DATABASE_URI
 
+def getFakeDBURI():
+	DATABASE = {	'ENGINE': 'mysql+pymysql',
+					'NAME': 'RDS_DB_NAME',
+					'USER': 'RDS_USERNAME',
+					'PASSWORD': 'RDS_PASSWORD',
+					'HOST': 'RDS_HOSTNAME',
+					'PORT': 'RDS_PORT'
+			}
+	#SQLALCHEMY_DATABASE_URI = "",DATABASE['USER'],"://",DATABASE['USER'],":",DATABASE['PASSWORD'],"@",DATABASE['HOST'],"/",DATABASE['NAME']
+	SQLALCHEMY_DATABASE_URI = "%(ENGINE)s://%(USER)s:%(PASSWORD)s@%(HOST)s/%(NAME)s" % DATABASE
+	return SQLALCHEMY_DATABASE_URI
+	
 SQLALCHEMY_DATABASE_URI = getDBURI("./gitIgnored/SQLALCHEMY_DATABASE_URI.txt")
 print "...SQLALCHEMY_DATABASE_URI : "
 print SQLALCHEMY_DATABASE_URI

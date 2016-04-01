@@ -1,5 +1,6 @@
 from application.models import Data, Users, Questions, Results
 from application import db
+from config import getFakeDBURI, getDBURI
 
 # Takes in a dictionary of results (question1=a, question2=b, etc)
 # Returns a dictionary of scores for each personality aspect (ex. N = 18)
@@ -73,6 +74,8 @@ def addResult(results, id):
 # returns a query object of Questions.all() ordered by number
 def getQuestions():
 	print "...getting Questions............"
+	DATABASE = getDBURI("./gitIgnored/SQLALCHEMY_DATABASE_URI.txt")
+	print "...Querying database: %s" % DATABASE
 	try:
 		questions = Questions.query.order_by(Questions.number).all()
 		print "...Successfully queried Questions.query.order_by(Questions.number).all()......"
