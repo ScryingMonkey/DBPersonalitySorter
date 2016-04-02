@@ -24,7 +24,7 @@ def getDBURI(filePath):
 		}
 
 		#SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://<db_user>:<db_password>@<endpoint>/<db_url>'
-		SQLALCHEMY_DATABASE_URI = DATABASE['USER'],"://",DATABASE['USER'],":",DATABASE['PASSWORD'],"@",DATABASE['HOST'],"/",DATABASE['NAME']
+		SQLALCHEMY_DATABASE_URI = "%(ENGINE)s://%(USER)s:%(PASSWORD)s@%(HOST)s/%(NAME)s" % DATABASE
 	else:
 		print "...in local branch in config.py.getDBURI()....."
 		file = open(filePath, "r")
@@ -40,7 +40,6 @@ def getFakeDBURI():
 					'HOST': 'RDS_HOSTNAME',
 					'PORT': 'RDS_PORT'
 			}
-	#SQLALCHEMY_DATABASE_URI = "",DATABASE['USER'],"://",DATABASE['USER'],":",DATABASE['PASSWORD'],"@",DATABASE['HOST'],"/",DATABASE['NAME']
 	SQLALCHEMY_DATABASE_URI = "%(ENGINE)s://%(USER)s:%(PASSWORD)s@%(HOST)s/%(NAME)s" % DATABASE
 	return SQLALCHEMY_DATABASE_URI
 	
